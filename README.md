@@ -34,6 +34,8 @@ parameter is an optional list of key values provided as parameter to
 `getText()` in a chain of recursive calls that resulted in the current
 call of `getValue()`.
 
+TODO: show successive calls in an example with recursion
+
 L10N DATA FORMAT
 ----------------
 
@@ -47,7 +49,7 @@ TODO: add examples with different separators:
 - different start and end, single character { }
 - different start and end, two characters {{ }}
 
-Add examples of advanced use cases:
+Add examples of advanced use cases, with separate voidable blocks:
 - plural
 - agreement with genre
 
