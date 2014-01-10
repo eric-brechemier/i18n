@@ -4,6 +4,12 @@ i18n
 Library for internationalization (i18n)
 and data format for localization (L10n)
 
+PRINCIPLES AND EXAMPLES
+-----------------------
+
+TODO: start with examples of use to introduce i18n process,
+      data format and API
+
 I18N API
 --------
 
@@ -52,4 +58,6 @@ TODO: add examples with different separators:
 Add examples of advanced use cases, with separate voidable blocks:
 - plural
 - agreement with genre
+- parameters not found, not replaced,
+  and end of unreplaced parameters correctly used as start of next one
 
