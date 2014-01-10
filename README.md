@@ -70,8 +70,9 @@ name of the parameter as argument:
 
     getFirstName( "firstName" );
 
-A single function can thus return values for several parameters to be
-replaced within the same message, as in the example below:
+Unlike in the example above, where the parameter has no use,
+the next example shows how A single function can return values
+for several parameters to be replaced within the same message:
 
     print( getText( "greeting", getUserInfo ) );
 
