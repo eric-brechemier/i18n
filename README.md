@@ -87,6 +87,25 @@ The translation of the above message results in two calls to `getUserInfo()`:
     getUserInfo( "firstName" );
     getUserInfo( "lastName" );
 
+L10N DATA FORMAT
+----------------
+
+TODO: start with simple example:
+key -> value
+
+The start and end separators of parameters can be customized.
+
+TODO: add examples with different separators:
+- same start and end: #
+- different start and end, single character { }
+- different start and end, two characters {{ }}
+
+Add examples of advanced use cases, with separate voidable blocks:
+- plural
+- agreement with genre
+- parameters not found, not replaced,
+  and end of unreplaced parameters correctly used as start of next one
+
 I18N API
 --------
 
@@ -115,23 +134,4 @@ TODO: add example 3, the value of the parameter is a template itself
 The name parameter identifies the parameter to replace.
 
 TODO: show successive calls in an example with recursion
-
-L10N DATA FORMAT
-----------------
-
-TODO: start with simple example:
-key -> value
-
-The start and end separators of parameters can be customized.
-
-TODO: add examples with different separators:
-- same start and end: #
-- different start and end, single character { }
-- different start and end, two characters {{ }}
-
-Add examples of advanced use cases, with separate voidable blocks:
-- plural
-- agreement with genre
-- parameters not found, not replaced,
-  and end of unreplaced parameters correctly used as start of next one
 
