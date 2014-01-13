@@ -196,8 +196,8 @@ TODO: show successive calls in an example with recursion
 REFERENCES
 ----------
 
-* [RFC-4646 - Tags for Identifying Languages][language tag]
-[language tag]: https://tools.ietf.org/html/rfc4646
+* [RFC-5646 - Tags for Identifying Languages][language tag]
+[language tag]: https://tools.ietf.org/html/rfc5646
 
 * [The Unicode Consortium][Unicode]
 [Unicode]: http://unicode.org/
