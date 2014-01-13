@@ -88,28 +88,81 @@ The translation of the above message results in two calls to `getUserInfo()`:
 CONVENTIONS FOR LOCALIZATION (L10N)
 -----------------------------------
 
-TODO: start with simple example:
-key -> value
+Each language is identified by a [language tag][] and is associated with
+a set of key/value pairs for the messages translated in this language.
+The language tag should be put in lower-case, using '-' as separator
+for a language tag in multiple parts.
 
-The key name should be in English. It should be only ASCII a-z, A-Z,
-and separators '.' '-' '\_'.
+Each key is unique in a given language. The same key refers to different
+translations of the same message in different languages.
 
-The start and end separators of parameters can be customized.
+The key name should be in English; it shall not be translated.
+It should contain only ASCII characters in the range a-z, A-Z, 0-9;
+the character '.' may be used to group keys in categories and subcategories.
 
-In some implementations, regular expressions may be used instead
-to specify the start/end separators and the range of characters
-allowed for the parameter name.
+The name of the key, as well as the name of categories and subcategories,
+may be made of several words; the first word should start with a lower-case
+letter, and following words should be capitalized, following the camel-case
+convention.
+
+A value is a text string made of [Unicode][] characters. A value may be
+a fixed message, or a message template with named parameters to replace
+with dynamic values to produce a message.
+
+Parameters are delineated from surrounding text by a start and end separator.
+The start and end separator may be identical or different, and may span
+one or more characters. The name of the parameter is found directly between
+the start and end separators, without additional whitespace. The name of
+a parameter follows the same conventions as the name of a key.
 
 TODO: add examples with different separators:
 - same start and end: #
 - different start and end, single character { }
 - different start and end, two characters {{ }}
 
-Add examples of advanced use cases, with separate voidable blocks:
+Names of parameters are not unique: the same name may appear in different
+message templates, and even multiple times within a single message template.
+
+Parameter values are provided by the application; each parameter value is
+a string, or a null value to represent a missing value: no value is provided
+for this parameter.
+
+When a string value has been provided, the parameter, from the start separator
+to the end separator, is replaced with the value, which may be empty.
+
+If no value has been provided for a parameter but a key with the same name
+as the parameter is found, the value of the key is computed and used as
+replacement for the parameter.
+
+When computing the value of a key for inclusion in another message template,
+the same parameter values provided by the application are used in both message
+templates.
+
+When no value has been provided and no key of the same name is found,
+not only the parameter, but the whole message template is replaced
+with an empty string.
+
+These voidable blocks provide a mechanism for advanced use cases where
+the localized message takes different forms depending on the number and
+gender of a parameter value.
+
+TODO: Add examples of advanced use cases, with separate voidable blocks:
 - plural
 - agreement with genre
-- parameters not found, not replaced,
-  and end of unreplaced parameters correctly used as start of next one
+
+In order to preserve the parameter unreplaced in the computed template
+message, the application may return a default value instead of null.
+This default value is the original text of the parameter placeholder,
+from start delimiter to end delimiter, provided to the application by the API.
+When the default value is returned, the parameter is left unchanged, and the
+processing of the template value goes on as if no parameter had been found
+in current position, skipping just the first character of the start delimiter.
+
+Thanks to the above behavior, no escaping is usually needed when a start
+delimiter happens to be included in the regular text of a localized message.
+
+TODO: add example of parameters not found,
+      with end of unreplaced parameters correctly used as start of next one
 
 APPLICATION PROGRAMMING INTERFACE FOR INTERNATIONALIZATION (I18N API)
 ---------------------------------------------------------------------
@@ -132,7 +185,7 @@ and the optional function `getValue()` allows `getText()` to retrieve values
 for parameters to replace in a template string to produce the message.
 The `getValue()` function has the following signature:
 
-    Function getValue(String name) -> String
+    Function getValue(String name, String defaultValue) -> String
 
 TODO: add example 3, the value of the parameter is a template itself
 
@@ -146,4 +199,6 @@ REFERENCES
 * [RFC-4646 - Tags for Identifying Languages][language tag]
 [language tag]: https://tools.ietf.org/html/rfc4646
 
+* [The Unicode Consortium][Unicode]
+[Unicode]: http://unicode.org/
 
