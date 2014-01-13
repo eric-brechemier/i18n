@@ -111,8 +111,8 @@ Add examples of advanced use cases, with separate voidable blocks:
 - parameters not found, not replaced,
   and end of unreplaced parameters correctly used as start of next one
 
-I18N API
---------
+APPLICATION PROGRAMMING INTERFACE FOR INTERNATIONALIZATION (I18N API)
+---------------------------------------------------------------------
 
 The first step in the internationalization process
 is to remove messages (both fixed messages and
