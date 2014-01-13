@@ -90,8 +90,11 @@ CONVENTIONS FOR LOCALIZATION (L10N)
 
 Each language is identified by a [language tag][] and is associated with
 a set of key/value pairs for the messages translated in this language.
-The language tag should be put in lower-case, using '-' as separator
-for a language tag in multiple parts.
+A language tag is made of one or several subtags, separated with '-'.
+
+The case of language tag is not relevant for comparison; language tags
+should be put in lower-case before comparison. Also, the '\_' character
+which appears sometimes as subtag separator must be replaced with '-'.
 
 Each key is unique in a given language. The same key refers to different
 translations of the same message in different languages.
