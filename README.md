@@ -2,7 +2,7 @@ i18n
 ====
 
 Library for internationalization (i18n)
-and data format for localization (L10n).
+and conventions for localization (L10n).
 
 PRINCIPLES AND EXAMPLES
 -----------------------
@@ -34,8 +34,6 @@ Translators can then use the messages in the source language
 as the basis for translations in a target language.
 Each translation can be saved in a separate text file,
 named after the [language tag][] of the target language:
-
-[language tag]: https://tools.ietf.org/html/rfc4646
 
     // fr.txt
     greeting: "Salut toi !"
@@ -87,13 +85,20 @@ The translation of the above message results in two calls to `getUserInfo()`:
     getUserInfo( "firstName" );
     getUserInfo( "lastName" );
 
-L10N DATA FORMAT
-----------------
+CONVENTIONS FOR LOCALIZATION (L10N)
+-----------------------------------
 
 TODO: start with simple example:
 key -> value
 
+The key name should be in English. It should be only ASCII a-z, A-Z,
+and separators '.' '-' '\_'.
+
 The start and end separators of parameters can be customized.
+
+In some implementations, regular expressions may be used instead
+to specify the start/end separators and the range of characters
+allowed for the parameter name.
 
 TODO: add examples with different separators:
 - same start and end: #
@@ -134,4 +139,11 @@ TODO: add example 3, the value of the parameter is a template itself
 The name parameter identifies the parameter to replace.
 
 TODO: show successive calls in an example with recursion
+
+REFERENCES
+----------
+
+* [RFC-4646 - Tags for Identifying Languages][language tag]
+[language tag]: https://tools.ietf.org/html/rfc4646
+
 
