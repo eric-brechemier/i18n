@@ -196,7 +196,7 @@ templates.
 
       "Name: {FullName}"
     + getValue( "FullName" ) -> NULL
-    +   fullName: "{firstName} {lastName}"
+    +   FullName: "{firstName} {lastName}"
       + getValue( "firstName" ) -> "John"
       + getValue( "lastName" ) -> "Doe"
       ------------------------------------
