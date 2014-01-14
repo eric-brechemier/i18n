@@ -96,7 +96,7 @@ A language tag is made of one or several subtags, separated with '-'.
     'en-GB'
     'en-US'
 
-The case of language tag is not relevant for comparison; language tags
+The case of a language tag is not relevant for comparison; language tags
 should be put in lower-case before comparison. Also, the '\_' character
 which appears sometimes as subtag separator must be replaced with '-'.
 
