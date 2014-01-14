@@ -231,7 +231,7 @@ a NULL value, and are omitted when it responds with an empty string.
       + getValue( "French.Other.Plural" ) -> NULL
       +   French.Other.Plural: "{FirstName.List} sont français"
         + getValue( "FirstName.List" ) -> NULL
-        +   FirstName.List: "{firstName}{FirstName.NotLast}{FirstName.Last}#
+        +   FirstName.List: "{firstName}{FirstName.NotLast}{FirstName.Last}"
           + getValue( "firstName" ) -> "Jeanne"
           + getValue( "FirstName.NotLast" ) -> ""
           + getValue( "FirstName.Last" ) -> NULL
