@@ -16,7 +16,7 @@ In this code, the string `"Hi there!"` is in English,
 and must be extracted to be replaced with a suitable
 translation in user's language:
 
-    print( getText( "greeting" ) );
+    print( getText( "Greeting" ) );
 
 The key is a unique identifier for the message.
 Like a variable name, it should be explicit,
@@ -28,7 +28,7 @@ shall be filed with the key, in a spreadsheet,
 a database, or a simple text file:
 
     // en.txt
-    greeting: "Hi there!"
+    Greeting: "Hi there!"
 
 Translators can then use the messages in the source language
 as the basis for translations in a target language.
@@ -36,7 +36,7 @@ Each translation can be saved in a separate text file,
 named after the [language tag][] of the target language:
 
     // fr.txt
-    greeting: "Salut toi !"
+    Greeting: "Salut toi !"
 
 As seen in the above example, only the message is translated,
 the key which identifies the message must be left untouched.
@@ -50,17 +50,17 @@ Since the order of grammatical structures changes depending on the language,
 it is not enough in this case to translate the fixed parts of the message,
 `"Hi "` and `"!"`; the message must be translated as a whole:
 
-    print( getText( "greeting", getFirstName ) );
+    print( getText( "Greeting", getFirstName ) );
 
 In the message string, a placeholder is included to mark the position
 of the variable value. Although numbers can be used in these placeholders,
 `{0}`, `{1}`, etc.,  names are more explicit:
 
     // en.txt
-    greeting: "Hi {firstName}!"
+    Greeting: "Hi {firstName}!"
 
     // fr.txt
-    greeting: "Salut {firstName} !"
+    Greeting: "Salut {firstName} !"
 
 Each time a parameter is found in a message string, the function provided
 as second parameter of `getText()` is called to retrieve the value, with the
@@ -72,13 +72,13 @@ Unlike in the example above, where the parameter has no use,
 the next example shows how A single function can return values
 for several parameters to be replaced within the same message:
 
-    print( getText( "greeting", getUserInfo ) );
+    print( getText( "Greeting", getUserInfo ) );
 
     // en.txt
-    greeting: "Hello {firstName} {LastName}!"
+    Greeting: "Hello {firstName} {lastName}!"
 
     // fr.txt
-    greeting: "Bonjour {firstName} {LastName} !"
+    Greeting: "Bonjour {firstName} {lastName} !"
 
 The translation of the above message results in two calls to `getUserInfo()`:
 
@@ -109,29 +109,29 @@ Each key is unique in a given language. The same key refers to different
 translations of the same message in different languages.
 
     // en.txt
-    greetings: "Hi"
+    Greetings: "Hi"
 
     // fr.txt
-    greetings: "Bonjour"
+    Greetings: "Bonjour"
 
 The key name should be in English; it shall not be translated.
 It should contain only ASCII characters in the range a-z, A-Z, 0-9;
 the character '.' may be used to group keys in categories and subcategories.
 
-    name
-    user.name
-    label.user.name
+    Name
+    User.Name
+    Label.User.Name
 
 The name of the key, as well as the name of categories and subcategories,
-may be made of several words; the first word should start with a lower-case
+may be made of several words; the first word should start with an upper-case
 letter, and following words should be capitalized, following the camel-case
 convention.
 
-    firstName
-    user.firstName
-    label.user.firstName
-    placeholder.user.firstName
-    invalid.user.firstName
+    FirstName
+    User.FirstName
+    Label.User.FirstName
+    Placeholder.User.FirstName
+    Invalid.User.FirstName
 
 A value is a text string made of [Unicode][] characters. A value may be
 a fixed message, or a message template with named parameters to replace
@@ -155,10 +155,14 @@ the start and end separators, without additional whitespace.
     "Dollar and braces: ${parameter}"
     "Number/Sharp sign: #parameter#"
 
-The name of a parameter follows the same conventions as the name of a key.
+The name of a parameter follows the same conventions as the name of a key,
+except for the first letter of each word, which may be either in upper case
+or in lower case: names starting with upper-case letters refer to keys which
+identify separate messages or message templates, while names starting with
+lower-case letters refer to dynamic values provided by the application.
 
-    "{greetings}"
-    "{label.user.firstName}{user.firstName}"
+    "{Greetings}"
+    "{Label.User.FirstName}{user.firstName}"
 
 Names of parameters are not unique: the same name may appear in different
 message templates, and even multiple times within a single message template.
@@ -166,9 +170,8 @@ message templates, and even multiple times within a single message template.
     "Hi {user.firstName}!"
     "Sign out if you are not {user.firstName}."
 
-Parameter values are provided by the application; each parameter value is
-a string, or a null value to represent a missing value, to indicate that
-no value has been provided for this parameter.
+Each parameter value is either a string, which may be an empty string, or a
+null value which means that no dynamic value is available for this parameter.
 
     getValue( "user.firstName" ) -> "John"
     getValue( "user.middleName" ) -> NULL
@@ -191,8 +194,8 @@ When computing the value of a key for inclusion in another message template,
 the same parameter values provided by the application are used in both message
 templates.
 
-      "Name: {fullName}"
-    + getValue( "fullName" ) -> NULL
+      "Name: {FullName}"
+    + getValue( "FullName" ) -> NULL
     +   fullName: "{firstName} {lastName}"
       + getValue( "firstName" ) -> "John"
       + getValue( "lastName" ) -> "Doe"
@@ -214,42 +217,42 @@ These voidable blocks provide a mechanism for advanced use cases where
 the localized message takes different forms depending on the number and
 gender of a parameter value.
 
-      "{french.singular}{french.plural}"
-    + getValue( "french.singular" ) -> NULL
-    +   french.singular: "{french.female}{french.other}"
-      + getValue( "french.female" ) -> NULL
-      +   french.female: "{firstName.female} est française"
+      "{French.Singular}{French.Plural}"
+    + getValue( "French.Singular" ) -> NULL
+    +   French.Singular: "{French.Female}{French.Other}"
+      + getValue( "French.Female" ) -> NULL
+      +   French.Female: "{firstName.female} est française"
         + getValue( "firstName.female" ) -> NULL
         --------------------------------------------------
         = ""
-      + getValue( "french.other" ) -> NULL
+      + getValue( "French.Other" ) -> NULL
       +   french.other: "{firstName.other} est français"
         + getValue( "firstName.other" ) -> NULL
         ------------------------------------------------
         = ""
       ----------------------------------------------------
       = ""
-    + getValue( "french.plural" ) -> NULL
-    +   french.plural: "{french.female.plural}{french.other.plural}"
-      + getValue( "french.female.plural" ) -> NULL
-      +   french.female.plural: "{firstName.female.plural} sont françaises"
+    + getValue( "French.Plural" ) -> NULL
+    +   French.Plural: "{French.Female.Plural}{French.Other.Plural}"
+      + getValue( "French.Female.Plural" ) -> NULL
+      +   French.Female.Plural: "{firstName.female.plural} sont françaises"
         + getValue( "firstName.female.plural" ) -> NULL
         -------------------------------------------------------------------
         = ""
-      + getValue( "french.other.plural" ) -> NULL
-      +   french.other.plural: "{firstName.other.plural} sont français"
-        + getValue( "firstName.other.plural" ) -> NULL
-        +   firstName.other.plural: "{firstName.list}"
-          + getValue( "firstName.list" ) -> NULL
-          +   firstName.list: "{firstName}{firstName.next}{firstName.last}#
+      + getValue( "French.Other.Plural" ) -> NULL
+      +   French.Other.Plural: "{FirstName.Other.Plural} sont français"
+        + getValue( "FirstName.Other.Plural" ) -> NULL
+        +   firstName.other.plural: "{FirstName.List}"
+          + getValue( "FirstName.List" ) -> NULL
+          +   FirstName.List: "{firstName}{FirstName.Next}{FirstName.Last}#
             + getValue( "firstName" ) -> "Jeanne"
-            + getValue( "firstName.next" ) -> NULL
-            +   firstName.next: ", {firstName.notLast}{firstName.next}"
+            + getValue( "FirstName.Next" ) -> NULL
+            +   firstName.next: ", {firstName.notLast}{FirstName.Next}"
               + getValue( "firstName.notLast" ) -> NULL
               -------------------------------------------------------------
               = ""
-            + getValue( "firstName.last" ) -> NULL
-            +   firstName.last: " et {firstName}"
+            + getValue( "FirstName.Last" ) -> NULL
+            +   FirstName.Last: " et {firstName}"
               + getValue( "firstName" ) -> Pierre
               ------------------------------------
               = " et Pierre"
