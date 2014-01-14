@@ -178,7 +178,7 @@ null value which means that no dynamic value is available for this parameter.
     getValue( "user.lastName" ) -> "Doe"
 
 When a string value has been provided, the parameter, from the start separator
-to the end separator, is replaced with the value, which may be empty.
+to the end separator, is replaced with the value:
 
       "Name: {firstName} {lastName}"
     + getValue( "firstName" ) -> "John"
@@ -205,55 +205,40 @@ templates.
     = "Name: John Doe"
 
 When no value has been provided and no key of the same name is found,
-not only the parameter, but the whole message template is replaced
-with an empty string.
+the parameter is left unreplaced, including start and end delimiter.
 
-      "Nickname: {nickName}"
-    + getValue( "nickName" ) -> NULL
-    --------------------------------
-    = ""
+      "See {BIB-2011} for reference."
+    + getValue( "BIB-2011" ) -> NULL
+    ------------------------------------------------------
+    = "See {BIB-2011} for reference."
 
-These voidable blocks provide a mechanism for advanced use cases where
-the localized message takes different forms depending on the number and
-gender of a parameter value.
+Thanks to the above behavior, no escaping is usually needed to avoid false
+positives in the detection of parameters in regular text.
+
+In advanced use cases, the localized message takes different forms depending
+on the number and gender of a parameter value. By responding with an empty
+string when requested for the value associated with a key, the application
+can silence templates or parts of templates which are not relevant in the
+current situation. This mechanism allows to define conditional blocks which
+are only included in the final message when the application responds with
+a NULL value, and are omitted when it responds with an empty string.
 
       "{French.Singular}{French.Plural}"
-    + getValue( "French.Singular" ) -> NULL
-    +   French.Singular: "{French.Female}{French.Other}"
-      + getValue( "French.Female" ) -> NULL
-      +   French.Female: "{firstName.female} est française"
-        + getValue( "firstName.female" ) -> NULL
-        --------------------------------------------------
-        = ""
-      + getValue( "French.Other" ) -> NULL
-      +   french.other: "{firstName.other} est français"
-        + getValue( "firstName.other" ) -> NULL
-        ------------------------------------------------
-        = ""
-      ----------------------------------------------------
-      = ""
+    + getValue( "French.Singular" ) -> ""
     + getValue( "French.Plural" ) -> NULL
     +   French.Plural: "{French.Female.Plural}{French.Other.Plural}"
-      + getValue( "French.Female.Plural" ) -> NULL
-      +   French.Female.Plural: "{firstName.female.plural} sont françaises"
-        + getValue( "firstName.female.plural" ) -> NULL
-        -------------------------------------------------------------------
-        = ""
+      + getValue( "French.Female.Plural" ) -> ""
       + getValue( "French.Other.Plural" ) -> NULL
       +   French.Other.Plural: "{FirstName.Other.Plural} sont français"
         + getValue( "FirstName.Other.Plural" ) -> NULL
         +   firstName.other.plural: "{FirstName.List}"
           + getValue( "FirstName.List" ) -> NULL
-          +   FirstName.List: "{firstName}{FirstName.Next}{FirstName.Last}#
+          +   FirstName.List: "{firstName}{FirstName.NotLast}{FirstName.Last}#
             + getValue( "firstName" ) -> "Jeanne"
-            + getValue( "FirstName.Next" ) -> NULL
-            +   firstName.next: ", {firstName.notLast}{FirstName.Next}"
-              + getValue( "firstName.notLast" ) -> NULL
-              -------------------------------------------------------------
-              = ""
+            + getValue( "FirstName.NotLast" ) -> ""
             + getValue( "FirstName.Last" ) -> NULL
             +   FirstName.Last: " et {firstName}"
-              + getValue( "firstName" ) -> Pierre
+              + getValue( "firstName" ) -> "Pierre"
               ------------------------------------
               = " et Pierre"
             ---------------------------------------------------------------
@@ -267,21 +252,14 @@ gender of a parameter value.
     -----------------------------------------------------------------------
     = "Jeanne et Pierre sont français"
 
-In order to preserve the parameter unreplaced in the computed template
-message, the application may return a default value instead of null.
-This default value is the original text of the parameter placeholder,
-from start delimiter to end delimiter, provided to the application by the API.
-When the default value is returned, the parameter is left unchanged, and the
-processing of the template value goes on as if no parameter had been found
-in current position, skipping just the first character of the start delimiter.
-
-      "See {BIB-2011} for reference."
-    + getValue( "BIB-2011", "{BIB-2011}" ) -> "{BIB-2011}"
-    ------------------------------------------------------
-    = "See {BIB-2011} for reference."
-
-Thanks to the above behavior, no escaping is usually needed when a start
-delimiter happens to be included in the regular text of a localized message.
+As seen in the above example, the same mechanism can be used to format
+lists of values: `getValue( "firstName" )` returns a different value
+in the list `[ "Jeanne", "Pierre" ]` in each call, and returns either
+a null value or an empty string to include or omit templates for the
+parts of the list: `getValue( "FirstName.NotLast" )` return the empty
+string to skip the middle part of the last because `"Pierre"` is the
+last item, while `getValue( "FirstName.Last" )` returns a null value
+to let the template `"FirstName.Last"` be rendered on the last item.
 
 APPLICATION PROGRAMMING INTERFACE FOR INTERNATIONALIZATION (I18N API)
 ---------------------------------------------------------------------
