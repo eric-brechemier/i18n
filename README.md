@@ -229,21 +229,17 @@ a NULL value, and are omitted when it responds with an empty string.
     +   French.Plural: "{French.Female.Plural}{French.Other.Plural}"
       + getValue( "French.Female.Plural" ) -> ""
       + getValue( "French.Other.Plural" ) -> NULL
-      +   French.Other.Plural: "{FirstName.Other.Plural} sont français"
-        + getValue( "FirstName.Other.Plural" ) -> NULL
-        +   firstName.other.plural: "{FirstName.List}"
-          + getValue( "FirstName.List" ) -> NULL
-          +   FirstName.List: "{firstName}{FirstName.NotLast}{FirstName.Last}#
-            + getValue( "firstName" ) -> "Jeanne"
-            + getValue( "FirstName.NotLast" ) -> ""
-            + getValue( "FirstName.Last" ) -> NULL
-            +   FirstName.Last: " et {firstName}"
-              + getValue( "firstName" ) -> "Pierre"
-              ------------------------------------
-              = " et Pierre"
-            ---------------------------------------------------------------
-            = "Jeanne et Pierre"
-          -----------------------------------------------------------------
+      +   French.Other.Plural: "{FirstName.List} sont français"
+        + getValue( "FirstName.List" ) -> NULL
+        +   FirstName.List: "{firstName}{FirstName.NotLast}{FirstName.Last}#
+          + getValue( "firstName" ) -> "Jeanne"
+          + getValue( "FirstName.NotLast" ) -> ""
+          + getValue( "FirstName.Last" ) -> NULL
+          +   FirstName.Last: " et {firstName}"
+            + getValue( "firstName" ) -> "Pierre"
+            ------------------------------------
+            = " et Pierre"
+          ---------------------------------------------------------------
           = "Jeanne et Pierre"
         -------------------------------------------------------------------
         = "Jeanne et Pierre sont français"
