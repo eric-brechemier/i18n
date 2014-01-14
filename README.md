@@ -252,10 +252,10 @@ As seen in the above example, the same mechanism can be used to format
 lists of values: `getValue( "firstName" )` returns a different value
 in the list `[ "Jeanne", "Pierre" ]` in each call, and returns either
 a null value or an empty string to include or omit templates for the
-parts of the list: `getValue( "FirstName.NotLast" )` return the empty
-string to skip the middle part of the last because `"Pierre"` is the
-last item, while `getValue( "FirstName.Last" )` returns a null value
-to let the template `"FirstName.Last"` be rendered on the last item.
+parts of the list: `getValue( "FirstName.NotLast" )` returns the empty
+string to skip the middle part of the template because `"Pierre"` is the
+last item in the list, while `getValue( "FirstName.Last" )` returns a null
+value to let the template `"FirstName.Last"` be rendered on the last item.
 
 APPLICATION PROGRAMMING INTERFACE FOR INTERNATIONALIZATION (I18N API)
 ---------------------------------------------------------------------
